@@ -5,12 +5,13 @@ import logging
 import subprocess
 from pathlib import Path
 import llm 
+from security import safe_command
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 def run_git(cmd):
     try:
-        return subprocess.run(cmd, capture_output=True, text=True, check=True).stdout.strip()
+        return safe_command.run(subprocess.run, cmd, capture_output=True, text=True, check=True).stdout.strip()
     except subprocess.CalledProcessError as e:
         logging.error("Git error: %s", e)
         sys.exit(1)
